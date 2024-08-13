@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Environments
+.kivy_venv
+kivy_venv/
+.env
+.venv
+env/
+venv/
+ENV/
