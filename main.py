@@ -3,12 +3,23 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+#from kivy.animation import Animation
 
+# Master Widget
+class OriginWidget(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Add other widgets or logic here
+
+        # Create and add MyBoxLayout
+        my_box_layout = MyBoxLayout()
+        self.add_widget(my_box_layout)
 
 class MyBoxLayout(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
+
 
         # Left pane (settings)
         left_pane = BoxLayout(orientation='vertical', spacing=0, size_hint_x=None, width=200)
@@ -53,8 +64,19 @@ class MyBoxLayout(BoxLayout):
 
 
 class MyApp(App):
-    def build(self):
-        return MyBoxLayout()
+    title = "USB Halt"
+    #icon = "logo1.jpeg"
+    #user_data = {'version': '1.0'}
 
+    def build(self):
+        return OriginWidget()
+    def on_start(self):
+        #Add Spinner function/window
+        pass
+    def on_stop(self):
+        #Add "Want to close?" window
+        pass
+
+    
 if __name__ == '__main__':
     MyApp().run()
