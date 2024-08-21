@@ -20,28 +20,46 @@ class MyBoxLayout(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
 
-
-        # Left pane (settings)
         left_pane = BoxLayout(orientation='vertical', spacing=0, size_hint_x=None, width=200)
+        # Left pane (single Doc convtr)
+        single_doc_convtr_button = Button(text='Convert Single Doc')
+        single_doc_convtr_button.bind(on_press=self.on_single_convtr_click)
+        left_pane.add_widget(single_doc_convtr_button)
+        # Left pane (Mltpl Doc Convtr)
+        mltpl_doc_convtr_button = Button(text='Convert Multiple Docs')
+        mltpl_doc_convtr_button.bind(on_press=self.on_mltpl_convtr_click)
+        left_pane.add_widget(mltpl_doc_convtr_button)
+        # Left pane (settings)
         settings_button = Button(text='Settings')
         settings_button.bind(on_press=self.on_settings_click)
         left_pane.add_widget(settings_button)
-        # Add more buttons for other options
         # Left pane (utilities)
         utilities_button = Button(text='Utilities')
         utilities_button.bind(on_press=self.on_utilities_click)
         left_pane.add_widget(utilities_button)
+        # Left Pane (history)
+        history_button = Button(text='History')
+        history_button.bind(on_press=self.on_history_click)
+        left_pane.add_widget(history_button)
         # Right pane (content)
-        right_pane = BoxLayout(orientation='vertical')
+        right_pane = BoxLayout(orientation='horizontal')
 
-        # Initial content
-        right_pane.add_widget(Label(text='Welcome'))
+        # Initial Right Pane View
+        right_pane.add_widget(Label(text='Welcome', bold=True, italic=True, color=(1, 0.65, 0, 1), markup=True, font_size='40sp'))
 
         self.add_widget(left_pane)
         self.add_widget(right_pane)
 
         self.right_pane = right_pane
         self.current_option = None
+ 
+    def on_single_convtr_click(self, instance):
+        self.current_option = 'single'
+        self.update_right_pane()
+    
+    def on_mltpl_convtr_click(self, instance):
+        self.current_option = 'multiple'
+        self.update_right_pane()
 
     def on_settings_click(self, instance):
         self.current_option = 'settings'
@@ -50,6 +68,12 @@ class MyBoxLayout(BoxLayout):
     def on_utilities_click(self, instance):
         self.current_option = 'utilities'
         self.update_right_pane()
+
+    def on_history_click(self, instance):
+        self.current_option = 'history'
+        self.update_right_pane()
+    
+    
 
     def update_right_pane(self):
         self.right_pane.clear_widgets()
@@ -61,6 +85,19 @@ class MyBoxLayout(BoxLayout):
         if self.current_option == 'utilities':
             utilities_label = Label(text='Utilities content')
             self.right_pane.add_widget(utilities_label)
+        if self.current_option == 'single':
+            single_doc_label = Button(text='Convert Single Doc', color=(1, 0.65, 0, 1), bold=True,
+                                      italic=True, font_size='20sp', size_hint=(0.5, 0.10),
+                                    pos_hint={'center_x': 0.5, 'center_y': 0.5})
+                         #size_hint=(0.2, 0.1), pos_hint={'x': 0.8, 'y': 0.1}
+            self.right_pane.add_widget(single_doc_label)
+        if self.current_option == 'multiple':
+            mltpl_label = Button(text='Convert Multiple Docs to PDF')
+            self.right_pane.add_widget(mltpl_label)
+
+        if self.current_option == 'history':
+            hst_label = Button(text='Converted Docs History')
+            self.right_pane.add_widget(hst_label)
 
 
 class MyApp(App):
