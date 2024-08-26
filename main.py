@@ -3,7 +3,7 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-#from kivy.animation import Animation
+from single_doc_converter import FilePickerPopup
 
 # Master Widget
 class OriginWidget(BoxLayout):
@@ -52,11 +52,11 @@ class MyBoxLayout(BoxLayout):
 
         self.right_pane = right_pane
         self.current_option = None
- 
+
     def on_single_convtr_click(self, instance):
         self.current_option = 'single'
         self.update_right_pane()
-    
+
     def on_mltpl_convtr_click(self, instance):
         self.current_option = 'multiple'
         self.update_right_pane()
@@ -72,8 +72,6 @@ class MyBoxLayout(BoxLayout):
     def on_history_click(self, instance):
         self.current_option = 'history'
         self.update_right_pane()
-    
-    
 
     def update_right_pane(self):
         self.right_pane.clear_widgets()
@@ -86,10 +84,11 @@ class MyBoxLayout(BoxLayout):
             utilities_label = Label(text='Utilities content')
             self.right_pane.add_widget(utilities_label)
         if self.current_option == 'single':
+            handle_file_selection = lambda selected_file: print(f"Selected file: {selected_file}") if selected_file else None
             single_doc_label = Button(text='Convert Single Doc', color=(1, 0.65, 0, 1), bold=True,
                                       italic=True, font_size='20sp', size_hint=(0.5, 0.10),
-                                    pos_hint={'center_x': 0.5, 'center_y': 0.5})
-                         #size_hint=(0.2, 0.1), pos_hint={'x': 0.8, 'y': 0.1}
+                                      pos_hint={'center_x': 0.5, 'center_y': 0.5})
+            single_doc_label.bind(on_press=lambda instance: FilePickerPopup(handle_file_selection).open())
             self.right_pane.add_widget(single_doc_label)
         if self.current_option == 'multiple':
             mltpl_label = Button(text='Convert Multiple Docs to PDF')
@@ -98,7 +97,6 @@ class MyBoxLayout(BoxLayout):
         if self.current_option == 'history':
             hst_label = Button(text='Converted Docs History')
             self.right_pane.add_widget(hst_label)
-
 
 class MyApp(App):
     title = "USB Halt"
@@ -114,6 +112,6 @@ class MyApp(App):
         #Add "Want to close?" window
         pass
 
-    
+
 if __name__ == '__main__':
     MyApp().run()
