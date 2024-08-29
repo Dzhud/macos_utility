@@ -1,2 +1,4 @@
 --To D0s--
+* Save and use last selection of File dir so that it doesn't go to root folder every time.
+* Solve permission issue for opening files
 * Pytest Integration

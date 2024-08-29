@@ -3,7 +3,8 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from single_doc_converter import FilePickerPopup
+from Utils.file_picker import FilePickerPopup
+from Utils.converter import convert_single_word_to_pdf
 
 # Master Widget
 class OriginWidget(BoxLayout):
@@ -19,6 +20,10 @@ class MyBoxLayout(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
+        
+        global file_selected, selection_pos
+        file_selected = ""
+        selection_pos = ""
 
         left_pane = BoxLayout(orientation='vertical', spacing=0, size_hint_x=None, width=200)
         # Left pane (single Doc convtr)
@@ -84,12 +89,18 @@ class MyBoxLayout(BoxLayout):
             utilities_label = Label(text='Utilities content')
             self.right_pane.add_widget(utilities_label)
         if self.current_option == 'single':
-            handle_file_selection = lambda selected_file: print(f"Selected file: {selected_file}") if selected_file else None
+            handle_file_selection = lambda selected_file: (
+                file_selected := selected_file, convert_single_word_to_pdf(file_selected, "example.pdf"), 
+                print(f"Selected file: {selected_file}\n\t **** Confirmation: {file_selected} *****")
+                ) if selected_file else None
             single_doc_label = Button(text='Convert Single Doc', color=(1, 0.65, 0, 1), bold=True,
                                       italic=True, font_size='20sp', size_hint=(0.5, 0.10),
                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
             single_doc_label.bind(on_press=lambda instance: FilePickerPopup(handle_file_selection).open())
             self.right_pane.add_widget(single_doc_label)
+            convert_single_word_to_pdf(file_selected, "example.pdf")
+            
+
         if self.current_option == 'multiple':
             mltpl_label = Button(text='Convert Multiple Docs to PDF')
             self.right_pane.add_widget(mltpl_label)

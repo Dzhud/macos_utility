@@ -40,3 +40,4 @@ class FilePickerPopup(Popup):
 def show_file_picker(file_selected_callback):
     popup = FilePickerPopup(file_selected_callback)
     popup.open()
+
