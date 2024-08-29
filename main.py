@@ -4,7 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from Utils.file_picker import FilePickerPopup
-from Utils.converter import convert_single_word_to_pdf
+#from Utils.converter import convert_single_word_to_pdf
 
 # Master Widget
 class OriginWidget(BoxLayout):
@@ -90,15 +90,14 @@ class MyBoxLayout(BoxLayout):
             self.right_pane.add_widget(utilities_label)
         if self.current_option == 'single':
             handle_file_selection = lambda selected_file: (
-                file_selected := selected_file, convert_single_word_to_pdf(file_selected, "example.pdf"), 
-                print(f"Selected file: {selected_file}\n\t **** Confirmation: {file_selected} *****")
+                file_selected := selected_file, 
+                print(f"Selected file: {selected_file}\n\t")
                 ) if selected_file else None
             single_doc_label = Button(text='Convert Single Doc', color=(1, 0.65, 0, 1), bold=True,
                                       italic=True, font_size='20sp', size_hint=(0.5, 0.10),
                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
             single_doc_label.bind(on_press=lambda instance: FilePickerPopup(handle_file_selection).open())
             self.right_pane.add_widget(single_doc_label)
-            convert_single_word_to_pdf(file_selected, "example.pdf")
             
 
         if self.current_option == 'multiple':

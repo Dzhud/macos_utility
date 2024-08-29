@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.label import Label
+from Utils.converter import convert_single_word_to_pdf
 
 
 class FilePickerPopup(Popup):
@@ -31,13 +32,15 @@ class FilePickerPopup(Popup):
 
     def on_select(self, instance):
         selected_file = self.filechooser.selection and self.filechooser.selection[0]
+        convert_single_word_to_pdf(selected_file, "example.pdf")
         self.dismiss()
         if self.file_selected_callback:
             self.file_selected_callback(selected_file)
 
 
 # Function to show the file picker popup
+'''
 def show_file_picker(file_selected_callback):
     popup = FilePickerPopup(file_selected_callback)
     popup.open()
-
+'''
