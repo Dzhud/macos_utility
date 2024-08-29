@@ -1,7 +1,0 @@
---To D0s--
-* Save and use last selection of File dir so that it doesn't go to root folder every time.
-* Solve permission issue for opening files <no longer req'd>
-* let DL'd files be in preferred Dir.
-	* User must first choose  (maybe in Settings tab) the dir tho before conversion.
-		* Set logic to automatically DL to the selected Dir   
-* Pytest Integration
