@@ -12,7 +12,7 @@ class ErrorPopup(Popup):
     def __init__(self, message, **kwargs):
         super().__init__(**kwargs)
         self.title = "Error"
-        self.size_hint = (0.7, 0.3)
+        self.size_hint = (0.4, 0.3)
 
         layout = BoxLayout(orientation='vertical', padding=10)
 
@@ -54,7 +54,7 @@ class FilePickerPopup(Popup):
             selected_file = self.filechooser.selection and self.filechooser.selection[0]
             if not selected_file:
                 raise ValueError("No file selected")
-
+            # Removes selected file's extension and assigns to `doc_title`
             file_extension = os.path.splitext(selected_file)[1].lower()
             doc_title = os.path.splitext(selected_file)[0]
 

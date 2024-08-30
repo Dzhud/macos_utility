@@ -21,9 +21,8 @@ class MyBoxLayout(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
         
-        global file_selected, selection_pos
+        global file_selected
         file_selected = ""
-        selection_pos = ""
 
         left_pane = BoxLayout(orientation='vertical', spacing=0, size_hint_x=None, width=200)
         # Left pane (single Doc convtr)
