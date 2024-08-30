@@ -10,3 +10,4 @@ env/
 venv/
 ENV/
 note.txt
+last_directory.json

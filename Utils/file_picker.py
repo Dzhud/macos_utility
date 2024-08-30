@@ -5,28 +5,13 @@ from kivy.uix.button import Button
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.label import Label
 from Utils.converter import convert_single_word_to_pdf
-import os
-
-
-class ErrorPopup(Popup):
-    def __init__(self, message, **kwargs):
-        super().__init__(**kwargs)
-        self.title = "Error"
-        self.size_hint = (0.4, 0.3)
-
-        layout = BoxLayout(orientation='vertical', padding=10)
-
-        label = Label(text=message)
-        close_button = Button(text="Close", size_hint_y=None, height=40)
-        close_button.bind(on_press=self.dismiss)
-
-        layout.add_widget(label)
-        layout.add_widget(close_button)
-
-        self.content = layout
+from Utils.error_pop import ErrorPopup
+import os, json
 
 
 class FilePickerPopup(Popup):
+    last_directory_file = "last_directory.json"  # To store Last Directory
+
     def __init__(self, file_selected_callback, **kwargs):
         super().__init__(**kwargs)
         self.title = "Select a File"
@@ -34,6 +19,10 @@ class FilePickerPopup(Popup):
         self.file_selected_callback = file_selected_callback
 
         layout = BoxLayout(orientation='vertical')
+        # Use the last directory if it exists, otherwise default to root
+        ##initial_directory = FilePickerPopup.last_directory or "/"
+        initial_directory = self.load_last_directory() or "/"
+
 
         self.filechooser = FileChooserListView()
         layout.add_widget(self.filechooser)
@@ -54,6 +43,11 @@ class FilePickerPopup(Popup):
             selected_file = self.filechooser.selection and self.filechooser.selection[0]
             if not selected_file:
                 raise ValueError("No file selected")
+            # Update the last_directory with the directory of the selected file
+            ##FilePickerPopup.last_directory = os.path.dirname(selected_file)
+             # Save the directory of the selected file
+            self.save_last_directory(os.path.dirname(selected_file))
+
             # Removes selected file's extension and assigns to `doc_title`
             file_extension = os.path.splitext(selected_file)[1].lower()
             doc_title = os.path.splitext(selected_file)[0]
@@ -72,6 +66,26 @@ class FilePickerPopup(Popup):
     def show_error_popup(self, message):
         popup = ErrorPopup(message)
         popup.open()
+
+    def save_last_directory(self, directory):
+        """Save the last directory to a file."""
+        try:
+            with open(self.last_directory_file, 'w') as f:
+                json.dump({'last_directory': directory}, f)
+        except IOError as e:
+            print(f"Error saving last directory: {str(e)}")
+
+    def load_last_directory(self):
+        """Load the last directory from a file."""
+        try:
+            if os.path.exists(self.last_directory_file):
+                with open(self.last_directory_file, 'r') as f:
+                    data = json.load(f)
+                    print(f"Loaded directory: {data.get('last_directory')}")
+                    return data.get('last_directory')
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Error loading last directory: {str(e)}")
+        return None
 
 # Function to show the file picker popup
 '''
