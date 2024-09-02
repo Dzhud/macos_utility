@@ -23,8 +23,8 @@ class FilePickerPopup(Popup):
         ##initial_directory = FilePickerPopup.last_directory or "/"
         initial_directory = self.load_last_directory() or "/"
 
-
-        self.filechooser = FileChooserListView()
+        # Initialize the FileChooserListView with the last used directory or default to root
+        self.filechooser = FileChooserListView(path=initial_directory)
         layout.add_widget(self.filechooser)
 
         buttons_layout = BoxLayout(size_hint_y=0.1)
