@@ -1,4 +1,3 @@
-# file_picker.py
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -7,10 +6,13 @@ from kivy.uix.label import Label
 from Utils.converter import convert_single_word_to_pdf
 from Utils.error_pop import ErrorPopup
 import os, json
+from datetime import datetime
 
 
 class FilePickerPopup(Popup):
     last_directory_file = "last_directory.json"  # To store Last Directory
+    history_file = "conversion_history.json"  # File to save conversion history
+
 
     def __init__(self, file_selected_callback, **kwargs):
         super().__init__(**kwargs)
@@ -43,8 +45,6 @@ class FilePickerPopup(Popup):
             selected_file = self.filechooser.selection and self.filechooser.selection[0]
             if not selected_file:
                 raise ValueError("No file selected")
-            # Update the last_directory with the directory of the selected file
-            ##FilePickerPopup.last_directory = os.path.dirname(selected_file)
              # Save the directory of the selected file
             self.save_last_directory(os.path.dirname(selected_file))
 
@@ -54,6 +54,9 @@ class FilePickerPopup(Popup):
 
             if file_extension in ['.docx', '.doc']:
                 convert_single_word_to_pdf(selected_file, f"{doc_title}.pdf")
+                # Save conversion details to history
+                self.save_conversion_history(selected_file, f"{doc_title}.pdf")
+
                 self.dismiss()
                 if self.file_selected_callback:
                     self.file_selected_callback(selected_file)
@@ -68,7 +71,7 @@ class FilePickerPopup(Popup):
         popup.open()
 
     def save_last_directory(self, directory):
-        """Save the last directory to a file."""
+        # Save the last directory to a file.
         try:
             with open(self.last_directory_file, 'w') as f:
                 json.dump({'last_directory': directory}, f)
@@ -76,7 +79,7 @@ class FilePickerPopup(Popup):
             print(f"Error saving last directory: {str(e)}")
 
     def load_last_directory(self):
-        """Load the last directory from a file."""
+        # Load the last directory from a file.
         try:
             if os.path.exists(self.last_directory_file):
                 with open(self.last_directory_file, 'r') as f:
@@ -86,6 +89,28 @@ class FilePickerPopup(Popup):
         except (IOError, json.JSONDecodeError) as e:
             print(f"Error loading last directory: {str(e)}")
         return None
+    
+    def save_conversion_history(self, source_file, output_file):
+        # Save conversion details to the history file.
+        conversion_record = {
+            'source_file': source_file,
+            'output_file': output_file,
+            'directory': os.path.dirname(output_file),
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+        try:
+            history = []
+            if os.path.exists(self.history_file):
+                with open(self.history_file, 'r') as f:
+                    history = json.load(f)
+            
+            history.append(conversion_record)
+
+            with open(self.history_file, 'w') as f:
+                json.dump(history, f, indent=4)
+        except IOError as e:
+            print(f"Error saving conversion history: {str(e)}")
 
 # Function to show the file picker popup
 '''
