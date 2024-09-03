@@ -7,7 +7,7 @@ class ProgressBarPopup(Popup):
         super().__init__(**kwargs)
         self.progress_bar = ProgressBar(max=max_value)
         self.content = self.progress_bar
-        self.title = "Processing..."
+        self.title = "Converting File(s)..."
         self.size_hint = (0.5, 0.2)
     
     def update_progress(self, value):
