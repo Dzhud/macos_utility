@@ -5,8 +5,11 @@ from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.label import Label
 from Utils.converter import convert_single_word_to_pdf
 from Utils.error_pop import ErrorPopup
+from Utils.progress_bar_widget import ProgressBarPopup
+from kivy.clock import Clock
 import os, json
 from datetime import datetime
+
 
 
 class FilePickerPopup(Popup):
@@ -47,6 +50,18 @@ class FilePickerPopup(Popup):
                 raise ValueError("No file selected")
              # Save the directory of the selected file
             self.save_last_directory(os.path.dirname(selected_file))
+
+            progress_popup = ProgressBarPopup()
+            progress_popup.open()
+            # Simulate the conversion process
+            def simulate_conversion(*args):
+                if progress_popup.progress_bar.value >= progress_popup.progress_bar.max:
+                    progress_popup.stop()
+                    return False
+                progress_popup.update_progress(progress_popup.progress_bar.value + 10)
+            
+            Clock.schedule_interval(simulate_conversion, 0.5)
+
 
             # Removes selected file's extension and assigns to `doc_title`
             file_extension = os.path.splitext(selected_file)[1].lower()

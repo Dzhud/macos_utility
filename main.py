@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from Utils.file_picker import FilePickerPopup
+from Utils.conversion_history import show_conversion_history
 #from Utils.converter import convert_single_word_to_pdf
 
 # Master Widget
@@ -104,8 +105,9 @@ class MyBoxLayout(BoxLayout):
             self.right_pane.add_widget(mltpl_label)
 
         if self.current_option == 'history':
-            hst_label = Button(text='Converted Docs History')
-            self.right_pane.add_widget(hst_label)
+            # hst_label = Button(text='Converted Docs History')
+            # self.right_pane.add_widget(hst_label)
+            show_conversion_history(self.right_pane)
 
 class MyApp(App):
     title = "USB Halt"
