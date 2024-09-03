@@ -8,14 +8,8 @@ from kivy.uix.image import Image
 from kivy.uix.button import Button
 
 def show_conversion_history(right_pane, history_file="conversion_history.json"):
-    """
-    Displays the conversion history in the right pane with an enhanced, aesthetically pleasing design.
 
-    Args:
-        right_pane (BoxLayout): The right pane where the history will be displayed.
-        history_file (str): The path to the JSON file that stores conversion history.
-    """
-    right_pane.clear_widgets()  # Clear any existing widgets in the right pane
+    # right_pane.clear_widgets()  # Clear any existing widgets in the right pane
 
     if os.path.exists(history_file):
         with open(history_file, 'r') as f:
