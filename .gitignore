@@ -11,3 +11,7 @@ venv/
 ENV/
 note.txt
 last_directory.json
+.pdf
+.docx
+.doc
+.json

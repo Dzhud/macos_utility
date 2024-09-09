@@ -53,6 +53,7 @@ class FilePickerPopup(Popup):
 
             progress_popup = ProgressBarPopup()
             progress_popup.open()
+            
             # Simulate the conversion process
             def simulate_conversion(*args):
                 if progress_popup.progress_bar.value >= progress_popup.progress_bar.max:
