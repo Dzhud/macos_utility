@@ -1,12 +1,24 @@
 import os
 import json
+from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.button import Button
+from Utils.file_picker import FilePickerPopup
 
+# For History Page View
+'''
+def rm_conversion_history():
+    """Clear the contents of conversion_history.json by overwriting with an empty list."""
+    history_file = 'conversion_history.json'
+    if os.path.exists(history_file):
+        with open(history_file, 'w') as file:
+            json.dump([], file)
+'''
+            
 def show_conversion_history(right_pane, history_file="conversion_history.json"):
 
     # right_pane.clear_widgets()  # Clear any existing widgets in the right pane
@@ -37,7 +49,7 @@ def show_conversion_history(right_pane, history_file="conversion_history.json"):
                 markup=True, size_hint_y=None, height=30, font_size='14sp', color=(0, 0, 0, 1)
             )
             output_label = Label(
-                text=f"[b]Output:[/b] {os.path.basename(record['output_file'])}",
+                text=f"{list(history).index(record)+1}.[b]Output:[/b] {os.path.basename(record['output_file'])}",
                 markup=True, size_hint_y=None, height=30, font_size='14sp', color=(1, 0.65, 0, 1)
             )
             directory_label = Label(
@@ -75,9 +87,17 @@ def show_conversion_history(right_pane, history_file="conversion_history.json"):
                 RoundedRectangle(size=card.size, pos=card.pos, radius=[10])
             
             layout.add_widget(card)
+            layout2 = BoxLayout(orientation='vertical', size_hint_y=None, padding=10)
+            clr_hst_btn = Button(text="Clear History", size_hint=(None, None), size=(80, 40), 
+                                    pos_hint={'center_x': 0.5, 'center_y':0.5},
+                                    )
+            layout2.add_widget(clr_hst_btn)
+            layout.add_widget(layout2)
 
         scroll_view.add_widget(layout)
         right_pane.add_widget(scroll_view)
+        
+        
     else:
         right_pane.add_widget(Label(text="No conversion history available"))
 
@@ -89,3 +109,15 @@ def open_file(filepath):
         subprocess.Popen(['open', filepath])  # For macOS, replace with 'xdg-open' for Linux or 'start' for Windows
     except Exception as e:
         print(f"Error opening file: {e}")
+
+'''
+def on_delete_history(layoutt):
+    """Clear the history and update the UI."""
+    rm_conversion_history()
+    layoutt.clear_widgets()
+    layoutt.add_widget(Label(text="Conversion history cleared."))
+
+    # Show a confirmation popup
+    popup = Popup(title="History Deleted", content=Label(text="All conversion records have been deleted."), size_hint=(0.6, 0.3))
+    popup.open()
+'''

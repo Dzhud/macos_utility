@@ -9,6 +9,7 @@ from Utils.progress_bar_widget import ProgressBarPopup
 from kivy.clock import Clock
 import os, json
 from datetime import datetime
+#from kivy.properties import StringProperty
 
 
 
@@ -19,7 +20,7 @@ class FilePickerPopup(Popup):
 
     def __init__(self, file_selected_callback, **kwargs):
         super().__init__(**kwargs)
-        self.title = "Select a File"
+        self.title = "Select File"
         self.size_hint = (0.9, 0.9)
         self.file_selected_callback = file_selected_callback
 
@@ -29,7 +30,7 @@ class FilePickerPopup(Popup):
         initial_directory = self.load_last_directory() or "/"
 
         # Initialize the FileChooserListView with the last used directory or default to root
-        self.filechooser = FileChooserListView(path=initial_directory)
+        self.filechooser = FileChooserListView(path=initial_directory, multiselect=True)
         layout.add_widget(self.filechooser)
 
         buttons_layout = BoxLayout(size_hint_y=0.1)
@@ -114,6 +115,7 @@ class FilePickerPopup(Popup):
             'directory': os.path.dirname(output_file),
             'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
+    
 
         try:
             history = []
@@ -127,6 +129,8 @@ class FilePickerPopup(Popup):
                 json.dump(history, f, indent=4)
         except IOError as e:
             print(f"Error saving conversion history: {str(e)}")
+
+
 
 # Function to show the file picker popup
 '''

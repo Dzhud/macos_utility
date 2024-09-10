@@ -5,7 +5,7 @@ from docx2pdf import convert
 def convert_single_word_to_pdf(word_file, pdf_file):
     try:
         convert(word_file, pdf_file)
-        print(f"\n\n\nConverted {word_file} to {pdf_file} successfully.\n\n\n")
+        print(f"\nConverted {word_file} to {pdf_file} successfully.\n")
     except Exception as e:
         print(f"Error: {e}")
 

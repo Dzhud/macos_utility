@@ -94,7 +94,7 @@ class MyBoxLayout(BoxLayout):
                 print(f"Selected file: {selected_file}\n\t")
                 ) if selected_file else None
             single_doc_label = Button(text='Convert Single Doc', color=(1, 0.65, 0, 1), bold=True,
-                                      italic=True, font_size='20sp', size_hint=(0.5, 0.10),
+                                      italic=True, font_size='20sp', size_hint=(0.05, 0.05),
                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
             single_doc_label.bind(on_press=lambda instance: FilePickerPopup(handle_file_selection).open())
             self.right_pane.add_widget(single_doc_label)
