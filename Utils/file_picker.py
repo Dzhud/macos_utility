@@ -78,6 +78,7 @@ class FilePickerPopup(Popup):
                 if self.file_selected_callback:
                     self.file_selected_callback(selected_file)
             else:
+                progress_popup.stop() # to prevent progress bar from opening
                 raise ValueError("Selected file is not a Word document")
 
         except ValueError as e:
