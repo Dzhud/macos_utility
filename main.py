@@ -5,6 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from Utils.file_picker import FilePickerPopup
 from Utils.conversion_history import show_conversion_history
+from Utils.multi_file_picker import MultiFilePickerPopup
 #from Utils.converter import convert_single_word_to_pdf
 
 # Master Widget
@@ -101,7 +102,14 @@ class MyBoxLayout(BoxLayout):
             
 
         if self.current_option == 'multiple':
-            mltpl_label = Button(text='Convert Multiple Docs to PDF')
+            handle_files_selection = lambda selected_files: (
+                #file_selected := selected_file, 
+                print(f"Selected files: {selected_files}\n\t")
+                ) if selected_files else None
+            mltpl_label = Button(text='Convert Multiple Docs to PDF', color=(1, 0.65, 0, 1), italic=True,
+                                 font_size='20sp', bold=True, pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                                 size_hint=(0.05, 0.05))
+            mltpl_label.bind(on_press=lambda instance: MultiFilePickerPopup(handle_files_selection).open())
             self.right_pane.add_widget(mltpl_label)
 
         if self.current_option == 'history':
